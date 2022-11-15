@@ -1,8 +1,5 @@
-# Python车牌识别、车牌抓取源程序，运行程序前需先导入cv2和numpy包。
-import cv2 as cv
-import numpy as np
-
-
+#221612160 范陈晔 
+#车牌识别抓取识别源程序（程序运行前需导入cv2和numpy包）
 # 找出最有可能是车牌的位置
 def getSatifyestBox(list_rate):
     for index, key in enumerate(list_rate):
