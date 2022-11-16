@@ -7,11 +7,11 @@ import time
 import sklearn
 
 
-# import pytesseract
+ 
 
  
 
-# 该函数能够读取磁盘中的图片文件，默认以彩色图像的方式进行读取
+ 
 def imread_photo(filename, flags=cv2.IMREAD_COLOR):
     """
     该函数能够读取磁盘中的图片文件，默认以彩色图像的方式进行读取
@@ -25,7 +25,7 @@ def imread_photo(filename, flags=cv2.IMREAD_COLOR):
     return cv2.imread(filename, flags)
 
 
-# 等比缩放  
+  
 def resize_keep_aspectratio(image_src, dst_size):
     src_h, src_w = image_src.shape[:2]
     # print(src_h, src_w)
@@ -50,7 +50,7 @@ def resize_keep_aspectratio(image_src, dst_size):
     return image_dst
 
 
-# 这个函数的作用就是来调整图像的尺寸大小，当输入图像尺寸的宽度大于阈值（默认1000），我们会将图像按比例缩小
+ 
 def resize_photo(imgArr, MAX_WIDTH=1000):
     """
     这个函数的作用就是来调整图像的尺寸大小，当输入图像尺寸的宽度大于阈值（默认1000），我们会将图像按比例缩小
@@ -75,7 +75,7 @@ def resize_photo(imgArr, MAX_WIDTH=1000):
     return img
 
 
-# hsv提取蓝色部分
+ 
 def hsv_color_find(img):
     img_copy = img.copy()
     """
@@ -95,8 +95,7 @@ def hsv_color_find(img):
 
     return res
 
-
-# 找到可能是车牌的一些矩形区域
+ 
 def predict(imageArr):
     """
     这个函数通过一系列的处理，找到可能是车牌的一些矩形区域
@@ -158,7 +157,7 @@ def predict(imageArr):
     return gray_img_, contours, contours2
 
 
-# 根据findContours返回的contours 画出轮廓
+ 
 def draw_contours(img, contours):
     for c in contours:
         x, y, w, h = cv2.boundingRect(c)
@@ -187,7 +186,7 @@ def draw_contours(img, contours):
     cv2.imshow("contours", img)
 
 
-# 根据车牌的一些物理特征（面积等）对所得的矩形进行过滤
+ 
 def chose_licence_plate(contours, Min_Area=2000):
     """
     这个函数根据车牌的一些物理特征（面积等）对所得的矩形进行过滤
@@ -273,8 +272,7 @@ def chose_licence_plate(contours, Min_Area=2000):
         return car_plate2
     return car_plate1
 
-
-# 根据得到的车牌定位，将车牌从原始图像中截取出来，并存在指定目录中。
+ 
 def license_segment(car_plates, out_path):
     """
     此函数根据得到的车牌定位，将车牌从原始图像中截取出来，并存在指定目录中。
@@ -299,7 +297,7 @@ def license_segment(car_plates, out_path):
     return out_path + "/card_img0.jpg"
 
 
-# 根据设定的阈值和图片直方图，找出波峰，用于分隔字符
+ 
 def find_waves(threshold, histogram):
     up_point = -1  # 上升点
     is_peak = False
@@ -319,8 +317,7 @@ def find_waves(threshold, histogram):
         wave_peaks.append((up_point, i))
     return wave_peaks
 
-
-# 将截取到的车牌照片转化为灰度图，然后去除车牌的上下无用的边缘部分，确定上下边框
+ 
 def remove_plate_upanddown_border(card_img):
     """
     这个函数将截取到的车牌照片转化为灰度图，然后去除车牌的上下无用的边缘部分，确定上下边框
@@ -403,7 +400,7 @@ def kMeans(dataSet, k, distMeas=distEclud, createCent=randCent):
     return centroids, clusterAssment
 
 
-# 将所有点作为一个簇，然后将该簇一分为二。之后选择其中一个簇继续进行划分，选择哪一个簇进行划分取决于对其划分是否可以最大程度降低SSE的值。
+ 
 def biKmeans(dataSet, k, distMeas=distEclud):
     """
     这个函数首先将所有点作为一个簇，然后将该簇一分为二。之后选择其中一个簇继续进行划分，选择哪一个簇进行划分取决于对其划分是否可以最大程度降低SSE的值。
@@ -440,7 +437,7 @@ def biKmeans(dataSet, k, distMeas=distEclud):
     return centList, clusterAssment
 
 
-# 对车牌的二值图进行水平方向的切分，将字符分割出来
+ 
 def split_licensePlate_character(plate_binary_img):
     """
     此函数用来对车牌的二值图进行水平方向的切分，将字符分割出来
@@ -479,8 +476,7 @@ def split_licensePlate_character(plate_binary_img):
     # plt.show()
     ############################
 
-
-# 输入灰度图，返回hash
+ 
 def getHash(image):
     avreage = np.mean(image)
     hash = []
@@ -493,7 +489,7 @@ def getHash(image):
     return hash
 
 
-# 计算汉明距离
+ 
 def Hamming_distance(hash1, hash2):
     num = 0
     for index in range(len(hash1)):
@@ -502,16 +498,7 @@ def Hamming_distance(hash1, hash2):
     return num
 
 
-# 参考：https://zhuanlan.zhihu.com/p/29868652
-# 感知哈希算法(pHash)
-# 缩小图片：32 * 32是一个较好的大小，这样方便DCT计算
-# 转化为灰度图
-# 计算DCT：利用Opencv中提供的dct()方法，注意输入的图像必须是32位浮点型，所以先利用numpy中的float32进行转换
-# 缩小DCT：DCT计算后的矩阵是32 * 32，保留左上角的8 * 8，这些代表的图片的最低频率
-# 计算平均值：计算缩小DCT后的所有像素点的平均值。
-# 进一步减小DCT：大于平均值记录为1，反之记录为0.
-# 得到信息指纹：组合64个信息位，顺序随意保持一致性。
-# 最后比对两张图片的指纹，获得汉明距离即可。
+ 
 def classify_pHash(image1_path, image2_path):
     image1 = imread_photo(image1_path)
     image2 = imread_photo(image2_path)
@@ -541,8 +528,7 @@ def findSmallest(arr):
             smallest_index = i
     return smallest_index
 
-
-# 字符识别 传入切好的车牌字符路径，字母集合路径
+ 
 def ocr_pHash(char_path, letter_path):
     print('\n函数ocr_pHash识别结果如下：')
     print('跳过第一个中文字符')
@@ -564,7 +550,7 @@ def ocr_pHash(char_path, letter_path):
     print('车牌为：某' + license_plate + '\n')
 
 
-# Tesseract-OCR 图像识别 传入车牌路径
+ 
 def tesseract_ocr(car_img_path):
     print('\n函数tesseract_ocr识别结果如下：')
     # 替换成你的路径
@@ -586,24 +572,7 @@ def tesseract_ocr(car_img_path):
             print('识别失败，哦豁\n')
 
 
-# 配合pytesseract食用 需要配置Tesseract-OCR的环境变量
-# def pytesseract_ocr(car_img_path):
-#     print('\n函数pytesseract_ocr识别结果如下：')
-#     img_cv = cv2.imread(car_img_path)
-#
-#     # By default OpenCV stores images in BGR format and since pytesseract assumes RGB format,
-#     # we need to convert from BGR to RGB format/mode:
-#     img_rgb = cv2.cvtColor(img_cv, cv2.COLOR_BGR2RGB)
-#     ret = pytesseract.image_to_string(img_rgb, lang='chi_sim')
-#     print('车牌为：' + ret + '\n')
-
-
-############################机器学习识别字符##########################################
-#这部分是支持向量机的代码
-############################机器学习识别字符##########################################
-
-
-# 加载数据集 传入图片需要压缩的像素比
+ 
 def load_data(w, h):
     """
     这个函数用来加载数据集
@@ -642,7 +611,7 @@ def load_data(w, h):
     return dataArr, np.array(label_list)
 
 
-# 保存训练好的模型
+ 
 def SVM_rocognition(dataArr, label_list):
     # 同步注释点1
     # 从sklearn.decomposition 导入PCA
@@ -665,7 +634,7 @@ def SVM_rocognition(dataArr, label_list):
     joblib.dump(svc, "based_SVM_character_train_model.m")
 
 
-# SVM字符识别
+ 
 def SVM_rocognition_character(character_list):
     print('\n函数SVM_rocognition_character识别结果如下：')
     w = 20
