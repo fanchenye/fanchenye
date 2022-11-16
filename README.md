@@ -105,7 +105,7 @@ def location(img):
     # cv.imshow('result',img_2)
     # cv.waitKey(0)
 
-    # 定位后需对车牌图像做后面的字符分割等处理，因此需要将车牌图块单独截取出来，截取轮廓
+    # 定位后需对车牌图像做后面的字符分割等处理，因此需要将车牌图块单独截取出来截取轮廓
     Xs = [i[0] for i in region]
     YS = [i[1] for i in region]
     x1 = min(Xs)
