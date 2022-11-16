@@ -9,8 +9,7 @@ import sklearn
 
 # import pytesseract
 
-# 开发环境 pycharm python-3.8.5 opencv-python-4.5.4.58 matplotlib-3.5.0 pip-21.2.3 Tesseract-OCR-5.0.0
-# 参考：https://blog.csdn.net/weixin_41695564/article/details/79712393
+ 
 
 # 该函数能够读取磁盘中的图片文件，默认以彩色图像的方式进行读取
 def imread_photo(filename, flags=cv2.IMREAD_COLOR):
@@ -26,7 +25,7 @@ def imread_photo(filename, flags=cv2.IMREAD_COLOR):
     return cv2.imread(filename, flags)
 
 
-# 等比缩放 参考：https://blog.csdn.net/JulyLi2019/article/details/120720752
+# 等比缩放  
 def resize_keep_aspectratio(image_src, dst_size):
     src_h, src_w = image_src.shape[:2]
     # print(src_h, src_w)
@@ -532,8 +531,7 @@ def classify_pHash(image1_path, image2_path):
     hash2 = getHash(dct2_roi)
     return Hamming_distance(hash1, hash2)
 
-
-# 原文链接：https://blog.csdn.net/qq_45453185/article/details/103450129
+ 
 def findSmallest(arr):
     smallest = arr[0]  # 存储最小的值
     smallest_index = 0  # 存储最小元素的索引
