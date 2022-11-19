@@ -198,7 +198,7 @@ def draw_contours(img, contours):
             2 是画出线的宽度
         """
 
-        # 获得最小的矩形轮廓 可能带旋转角度
+       # 获得最小的矩形轮廓 可能带旋转角度
         rect = cv2.minAreaRect(c)
         # 计算最小区域的坐标
         box = cv2.boxPoints(rect)
